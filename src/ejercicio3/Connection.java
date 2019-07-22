@@ -1,22 +1,21 @@
 package ejercicio3;
 
-public class Conexion {
+/**
+ * show if we are connect to data base
+ * @autor facundo sanchez
+ * @version 1.0
+ */
+public class Connection {
+  private boolean isConnect;
 
-    /**
-     * muestra si estamos o no conectados a la base de datos
-     */
-    private boolean conectado;
+  //region getters y Setters
+  public boolean isConnect() {
+    return isConnect;
+  }
 
-    //region getters y Setters
-
-    public boolean isConectado() {
-        return conectado;
-    }
-
-    public void setConectado(boolean conectado) {
-        this.conectado = conectado;
-    }
-
-    //endregion
+  public void setConnect(boolean connect) {
+    this.isConnect = connect;
+  }
+  //endregion
 
 }

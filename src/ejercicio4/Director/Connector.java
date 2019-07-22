@@ -3,22 +3,36 @@ package ejercicio4.Director;
 import ejercicio4.AbstractBuilding;
 import ejercicio4.Connection;
 
-public class Conector {
-    private AbstractBuilding abstractBuilding;
+public class Connector {
+  private AbstractBuilding abstractBuilding;
 
-    public Conector(AbstractBuilding abstractBuilding){
-        this.abstractBuilding = abstractBuilding;
-    }
+  /**
+   * builder
+   * @param abstractBuilding
+   */
+  public Connector(AbstractBuilding abstractBuilding){
+    this.abstractBuilding = abstractBuilding;
+  }
+  /**
+   * get the abstract builder
+   * @return this.abstractBuilding
+   */
+  public AbstractBuilding getAbstractBuilding() {
+    return abstractBuilding;
+  }
 
-    public AbstractBuilding getAbstractBuilding() {
-        return abstractBuilding;
-    }
-
-    public void setAbstractBuilding(AbstractBuilding abstractBuilding) {
-        this.abstractBuilding = abstractBuilding;
-    }
-
-    public Connection conectarse(){
-        return abstractBuilding.connectTo();
-    }
+  /**
+   * setter this.abstractBuilding
+   * @param abstractBuilding the new abstract building
+   */
+  public void setAbstractBuilding(AbstractBuilding abstractBuilding) {
+    this.abstractBuilding = abstractBuilding;
+  }
+  /**
+   * generate a connection object
+   * @return Connection object
+   */
+  public Connection connect(){
+    return abstractBuilding.connectTo();
+  }
 }

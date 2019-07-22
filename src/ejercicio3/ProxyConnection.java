@@ -1,26 +1,35 @@
 package ejercicio3;
 
-public class ConexionProxy implements IConexion {
-
-    private ImplementacionIConexion connection;
-
-    @Override
-    public void conectar(Conexion conexion)
+/**
+ * @author facundo sanchez
+ * @version 1.0
+ */
+public class ProxyConnection implements IConnection {
+  private IConnectionImplementation connection;
+  /**
+   * start a connection to database
+   * @param connection database to connect
+   */
+  @Override
+  public void connect(Connection connection)
+  {
+    if(this.connection == null)
     {
-        if(connection == null)
-        {
-            connection = new ImplementacionIConexion();
-        }
-        connection.conectar(conexion);
+      this.connection = new IConnectionImplementation();
     }
-
-    @Override
-    public void desconectar(Conexion conexion)
+    this.connection.connect(connection);
+  }
+  /**
+   * stop a connection to data base
+   * @param connection database to disconnect
+   */
+  @Override
+  public void disconnect(Connection connection)
+  {
+    if(this.connection == null)
     {
-        if(connection == null)
-        {
-            connection = new ImplementacionIConexion();
-        }
-        connection.conectar(conexion);
+      this.connection = new IConnectionImplementation();
     }
+    this.connection.connect(connection);
+  }
 }

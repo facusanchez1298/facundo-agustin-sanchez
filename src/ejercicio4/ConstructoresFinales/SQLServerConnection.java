@@ -1,18 +1,23 @@
 package ejercicio4.ConstructoresFinales;
 
-import ejercicio4.AbstractConstructor;
-import ejercicio4.Conexion;
+import ejercicio4.AbstractBuilding;
+import ejercicio4.Connection;
 
-public class ConexionSQLServer extends AbstractConstructor {
+public class SQLServerConnection extends AbstractBuilding {
 
-    public ConexionSQLServer(){
-        super.conexion = new Conexion();
-    }
-
-    @Override
-    public Conexion conectar() {
-
-        conexion.setNombre("SQLServer");
-        return conexion;
-    }
+  /**
+   * builder
+   */
+  public SQLServerConnection(){
+    super.connection = new Connection();
+  }
+  /**
+   * change the atribute name to 'sqlserver'
+   * @return
+   */
+  @Override
+  public Connection connectTo() {
+    connection.setName("SQLServer");
+    return connection;
+  }
 }

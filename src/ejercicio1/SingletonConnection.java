@@ -1,30 +1,45 @@
 package ejercicio1;
-
-public class ConexionSingleton {
-
-    private String srl;
-    private static ConexionSingleton conexion;
-
-    //building
-    private ConexionSingleton(String srl){
-        srl = srl;
-    }
-
   /**
-   * return a ConexionSingleton object
-   * @param url the conection string
-   * @return
+   * create a connection whit the singleton patterns
+   * @autor facundo sanchez
+   * @version  1.0
    */
-    public static ConexionSingleton conectar(String url){
-        if(conexion == null){
-
-            System.out.println("conectando");
-            conexion = new ConexionSingleton(url);
-            return conexion;
-        }
-
-        System.out.println("ya estabas conectado");
-        return conexion;
+public class SingletonConnection {
+  private String url;
+  private static Connection connection;
+  /**
+     * empty private builder
+     * @param url andres for connect
+     */
+  private  SingletonConnection(String url){
+    this.url = url;
+  }
+  /**
+     *private class to have the singletonConnection object
+     */
+  private static class Connection{
+      static SingletonConnection singletonConnection;
+      /**
+       *
+       * @param url andres for connect
+       */
+      private Connection(String url){
+        singletonConnection = new SingletonConnection(url);
+      }
     }
-
+  /** return a SingletonConnection object
+     * @param url the connection string
+     * @return  SingletonConnection object
+     */
+  public static SingletonConnection connectTo(String url){
+      System.out.println("you are connected to: " + url);
+      return connection.singletonConnection;
+    }
+  /** return a SingletonConnection object
+     * @param url the connection string
+     * @return  SingletonConnection object
+     */
+  public void setUrl(String url){
+      this.url = url;
+    }
 }
