@@ -3,14 +3,22 @@ package DataBase;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-/** here we'll have the product
+/**
+ * here we'll have the product
  * @author facundo sanchez
  * @version 1.0
  */
 public class Database {
   private int index = 1;
   ArrayList<Product> stock = new ArrayList<Product>();
-
+  ArrayList<Order> orders = new ArrayList<Order>();
+  /**
+   * add a order to dataBase
+   * @param order
+   */
+  public void addOrder(Order order){
+    orders.add(order);
+  }
   /**
    * add a product to stock
    * @param name product name
@@ -53,7 +61,7 @@ public class Database {
     stock.get(id).setName(newName);
     stock.get(id).setPrice(newPrice);
     stock.get(id).setQuantity(quantity);
-    stock.get(id).setDescripcion(description);
+    stock.get(id).setDescription(description);
   }
   /**
    * delete a product

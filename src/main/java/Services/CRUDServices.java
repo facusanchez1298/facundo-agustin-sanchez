@@ -3,7 +3,7 @@ package Services;
 import DataBase.Database;
 import DataBase.Product;
 
-public class Services {
+public class CRUDServices {
   Database database = new Database();
 
   /**

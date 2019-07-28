@@ -1,11 +1,11 @@
 import DataBase.Product;
-import Services.Services;
-import java.util.ArrayList;
+import Services.CRUDServices;
+import Services.ShoppingCartServices;
 import java.util.Scanner;
 
-public class ShoppingCart {
-  private Services services = new Services();
-  private ArrayList<Product> shoppingCart = new ArrayList<Product>();
+public class Page {
+  private CRUDServices crudservices = new CRUDServices();
+  private ShoppingCartServices shoppingCart = new ShoppingCartServices();
   Scanner scanner = new Scanner(System.in);
   /**
    * control the program
@@ -19,7 +19,8 @@ public class ShoppingCart {
       + "\n4 - remove a product"
       + "\n5 - add products to your sopping cart"
       + "\n6 - see you shopping cart"
-      + "\n7 - close"
+      + "\n7 - buy all in shopping cart"
+      + "\n8 - close"
       + "\nwhat do you wanna do?: ");
       String answer = askForString("");
       switch (answer.charAt(0)){
@@ -41,7 +42,10 @@ public class ShoppingCart {
         case '6':
           showShoppingCart();
           break;
-        case '7': System.exit(0);
+        case '7':
+          buyShoppingCart();
+          break;
+        case '8': System.exit(0);
         default:
           System.out.println("index not exist. try again");
           break;
@@ -55,8 +59,8 @@ public class ShoppingCart {
   private void addProductToShoppingCart() {
     showProducts();
     int index = askForInt("insert the index of the product that you want");
-    while(!services.exist(index)) index = askForInt("the joined id is not valid, please try again: ");
-    Product product = services.getProduct(index);
+    while(!crudservices.exist(index)) index = askForInt("the joined id is not valid, please try again: ");
+    Product product = crudservices.getProduct(index);
     product.setQuantity(askForInt("enter the quantity that you want"));
     shoppingCart.add(product);
   }
@@ -72,6 +76,14 @@ public class ShoppingCart {
       shoppingCart.stream().
         forEach(q -> System.out.printf("%-3s %-10s %-6s %-5s\n", q.getId(), q.getName(), q.getPrice(), q.getQuantity()));
     }
+  }
+  /**
+   * buy everything in the shopping cart
+   */
+  private void buyShoppingCart(){
+    System.out.println("gracias por su compra!!");
+    waitUserPress();
+    shoppingCart.buy();
   }
   /**
    * wait for the user to press a key enter
@@ -113,7 +125,7 @@ public class ShoppingCart {
    */
   public void showProducts(){
     System.out.println("\nhere's all the product:");
-    services.showProducts();
+    crudservices.showProducts();
     waitUserPress();
   }
   /**
@@ -127,23 +139,23 @@ public class ShoppingCart {
     String description;
     if(askForContinue("want add a product description?")){
       description = askForString("please introduce a product description: ");
-      services.SaveProduct(name, price, quality, description);
+      crudservices.SaveProduct(name, price, quality, description);
     }
-    else services.SaveProduct(name, price, quality);
+    else crudservices.SaveProduct(name, price, quality);
   }
   /**
    * delete a product from the data base
    */
   private void removeProduct() {
-    if (!services.isEmtpy()) {
+    if (!crudservices.isEmtpy()) {
       System.out.println("welcome to product remover");
       showProducts();
       int index = askForInt("which product want you remove?:");
-      while (!services.exist(index)) {
+      while (!crudservices.exist(index)) {
         System.out.println("id joined does not exists, please try again.");
         index = askForInt("which product want you remove?");
       }
-      services.removeProduct(index);
+      crudservices.removeProduct(index);
       System.out.println("product deleted");
     } else
       System.out.println("don't have nothing to delete");
@@ -152,11 +164,11 @@ public class ShoppingCart {
    * edit a product from the data base
    */
   private void editProduct() {
-    if (!services.isEmtpy()) {
+    if (!crudservices.isEmtpy()) {
       System.out.println("welcome to the product editor");
       showProducts();
       int index = askForInt("which product want you edit?:");
-      while (!services.exist(index)) {
+      while (!crudservices.exist(index)) {
         System.out.println("id joined does not exists, please try again.");
         index = askForInt("which product want you edit?");
       }
@@ -164,7 +176,7 @@ public class ShoppingCart {
       float price = askForFloat("enter the new product price");
       int quantity = askForInt("enter the quantity that you have");
       String description = askForString("enter the new product description");
-      services.editProduct(index, name, price, quantity, description);
+      crudservices.editProduct(index, name, price, quantity, description);
       System.out.println("product edited");
     } else
       System.out.println("you don't have nothing to edit");

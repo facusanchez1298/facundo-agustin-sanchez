@@ -5,14 +5,14 @@ public class Product {
   private String name;
   private float price;
   private int quantity;
-  private String descripcion;
+  private String description;
 
   public Product(int id, String name, float price, int quantity, String descripcion) {
     this.id = id;
     this.name = name;
     this.price = price;
     this.quantity = quantity;
-    this.descripcion = descripcion;
+    this.description = descripcion;
   }
 
   public Product(int id, String name, float price, int quantity) {
@@ -50,12 +50,12 @@ public class Product {
     this.quantity = quantity;
   }
 
-  public String getDescripcion() {
-    return descripcion;
+  public String getDescription() {
+    return description;
   }
 
-  public void setDescripcion(String descripcion) {
-    this.descripcion = descripcion;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public int getId(Product product, Product product1) {
