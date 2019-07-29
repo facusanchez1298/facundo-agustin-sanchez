@@ -1,8 +1,9 @@
 package DataBase;
 
 import java.util.ArrayList;
-import java.util.stream.Stream;
-
+/**
+ *  
+ */
 public class ShoppingCart {
   private  ArrayList<Product> shoopingCart = new ArrayList<Product>();
   private boolean state = false;

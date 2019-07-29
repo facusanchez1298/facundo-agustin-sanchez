@@ -7,7 +7,10 @@ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 public class Order {
   ShoppingCart shoppingCarts = new ShoppingCart();
   private Date date;
-
+  /**
+   * builder
+   * @param shoppingCart shopping car to put in the order
+   */
   public Order(ShoppingCart shoppingCart) {
     this.shoppingCarts = shoppingCart;
     this.date = new Date();
@@ -21,5 +24,11 @@ public class Order {
     this.shoppingCarts = shoppingCarts;
   }
 
+  public Date getDate() {
+    return date;
+  }
 
+  public void setDate(Date date) {
+    this.date = date;
+  }
 }
