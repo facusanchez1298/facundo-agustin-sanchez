@@ -7,7 +7,7 @@ public class Controller {
 
   private ArrayList<Files> allFiles;
   private ArrayList<Files> recentFiles;
-  Scanner scan;
+  private Scanner scan;
 
   public Controller(){
     this.allFiles = new ArrayList<Files>();
@@ -21,12 +21,12 @@ public class Controller {
 
   public void addToRecent(Files files){
 
-    if(this.recentFiles.contains(files)){
+    if(this.recentFiles.contains(files))
       this.recentFiles.remove(files);
-    }
-    else if(this.recentFiles.size() >= 15){
+
+    else if(this.recentFiles.size() >= 15)
       this.recentFiles.remove(0);
-    }
+
     this.recentFiles.add(files);
   }
 
@@ -43,12 +43,13 @@ public class Controller {
       int numberEntered;
       boolean keepAsking = true;
       while(keepAsking) {
-        numberEntered = scan.nextInt() - 1;
+        numberEntered = scan.nextInt() - 1; //numero ingresado
         if (check(list, numberEntered)) {
           System.out.println(list.get(numberEntered).getContent());
           keepAsking = false;
           addToRecent(list.get(numberEntered));
-        }else System.out.println("your number  is not valid, try again");
+        }
+        else System.out.println("your number  is not valid, try again");
       }
     }else System.out.println("you don't have recent files");
     waitForKey();
@@ -57,7 +58,7 @@ public class Controller {
 
   private void showFile(ArrayList<Files> list, boolean isRecentFiles){
     if(isRecentFiles){
-      for (int j = list.size(); j > 0; j++) {
+      for (int j = list.size() - 1; j >= 0; j--) {
         System.out.println((j + 1) + " " + list.get(j).getName());
       }
     }else {
@@ -90,8 +91,7 @@ public class Controller {
 
   private void waitForKey() {
     System.out.println("touch enter for continue...");
-    Scanner scanner = new Scanner(System.in);
-    scanner.nextLine();
+    scan.nextLine();
   }
 
   private boolean check(ArrayList<Files> list, int i) {
