@@ -2,16 +2,20 @@ package facu.DAO.tables;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class User {
   @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @Column(name = "id_user", updatable = false, nullable = false)
   private int id;
   @Column(name = "user_Name")
   private String userName;
-  @Column(name = "adress")
-  private String adress;
+  @Column(name = "address")
+  private String address;
   @Column(name = "password")
   private String password;
   @Column(name = "name")
@@ -27,10 +31,10 @@ public class User {
 
   }
 
-  public User(int id, String userName, String adress, String password, String name, String lastName, String surName, int age) {
+  public User(int id, String userName, String address, String password, String name, String lastName, String surName, int age) {
     this.id = id;
     this.userName = userName;
-    this.adress = adress;
+    this.address = address;
     this.password = password;
     this.name = name;
     this.lastName = lastName;
@@ -54,12 +58,12 @@ public class User {
     this.userName = userName;
   }
 
-  public String getAdress() {
-    return adress;
+  public String getAddress() {
+    return address;
   }
 
-  public void setAdress(String adress) {
-    this.adress = adress;
+  public void setAddress(String address) {
+    this.address = address;
   }
 
   public String getPassword() {

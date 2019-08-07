@@ -1,16 +1,17 @@
-package facu;
+package facu.Controllers;
 
-import facu.DAO.interfaces.Dao;
 import facu.DAO.tables.User;
-import facu.Service.incerfaces.UserServices;
+import facu.Greeting;
+import facu.Services.incerfaces.UserServices;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Logger;
-import javax.jws.Oneway;
-import javax.tools.JavaCompiler;
+import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class GreetingController {
+public class Controller {
   @Autowired
   private UserServices userServices;
 
@@ -39,5 +40,15 @@ public class GreetingController {
   @GetMapping(value = "/users")
   public List<User> getUser(){
     return userServices.findAll();
+  }
+
+  @GetMapping(value = "/users/{id}")
+  public User getUserById(@PathVariable("id") @NotBlank int id){
+    return userServices.findById(id);
+  }
+
+  @DeleteMapping(value = "/users/{id}")
+  public void deleteUser(@PathVariable("id") @NotBlank int id){
+    userServices.removeUserById(id);
   }
 }
