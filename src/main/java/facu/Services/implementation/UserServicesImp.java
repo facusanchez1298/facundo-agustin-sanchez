@@ -61,5 +61,21 @@ public class UserServicesImp implements UserServices {
   public void removeUserById(int id) {
     data.deleteById(id);
   }
+  /**
+   * update a user in the data base
+   * @param id user id from user to change
+   * @param user new data for the user
+   */
+  @Override
+  public void updateUserById(int id, User user) {
+    if(user == null) throw new RuntimeException("user is not valid");
+    User dbUser = data.getOne(id);
+    if(dbUser != null){
+      user.setId(dbUser.getId()); //set the new user id, have to have the same id
+      dbUser = user;
+      data.save(dbUser);
+    }
+    else throw new RuntimeException("the id entered is not valid");
+  }
 
 }

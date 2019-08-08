@@ -6,8 +6,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Product {
@@ -21,11 +19,8 @@ public class Product {
   private float price;
   @Column
   private String description;
-
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "stock_id")
-  private Stock stock;
+  @Column
+  private String category;
 
   public Product(){
 
@@ -70,5 +65,17 @@ public class Product {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getCategory() {
+    return category;
+  }
+
+  public void setCategory(String category) {
+    this.category = category;
   }
 }

@@ -39,4 +39,6 @@ public interface UserServices {
    * @param id user id to delete
    */
   void removeUserById(int id);
+
+  void updateUserById(int id, User user);
 }

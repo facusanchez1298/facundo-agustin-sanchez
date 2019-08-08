@@ -3,7 +3,11 @@ package facu.Services.incerfaces;
 import facu.DAO.tables.Product;
 
 public interface ProductServices {
-
+  /**
+   * add a new product in the data base
+   * @param product new product to add
+   */
+  void createNewProduct(Product product);
   /**
    * create a new product in the data base
    * @param name product name
@@ -35,4 +39,11 @@ public interface ProductServices {
    * @return all the product from the data base
    */
   Iterable<Product> getAllProducts();
+
+  /**
+   * edit a product in the data base
+   * @param id product id from the product to edit
+   * @param product new data for this product
+   */
+  void updateProduct(int id, Product product);
 }

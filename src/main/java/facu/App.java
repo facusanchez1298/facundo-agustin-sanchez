@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @ComponentScan(basePackages="facu")
 public class App {
-
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
     }
