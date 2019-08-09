@@ -1,10 +1,10 @@
-package facu.Services.implementation;
+package facu.services.implementation;
 
-import facu.DAO.interfaces.DaoUser;
-import facu.DAO.models.Product;
-import facu.DAO.models.ShoppingCart;
-import facu.DAO.models.User;
-import facu.Services.incerfaces.UserServices;
+import facu.dao.interfaces.DaoUser;
+import facu.dao.models.Product;
+import facu.dao.models.ShoppingCart;
+import facu.dao.models.User;
+import facu.services.incerfaces.UserServices;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class UserServicesImp implements UserServices {
    * save a user in the data base
    * @param id user id for the new product
    * @param userName user username for the new product
-   * @param andress
+   * @param address
    * @param password user password for the new product
    * @param name user name for the new product
    * @param lastName user last name for the new product
@@ -25,9 +25,9 @@ public class UserServicesImp implements UserServices {
    * @param age user age for the new product
    */
   @Override
-  public void saveUser(int id, String userName, String andress, String password, String name,
+  public void saveUser(int id, String userName,String type, String address, String password, String name,
     String lastName, String surName, int age) {
-    User user = new User(id, userName, andress, password, name, lastName, surName, age);
+    User user = new User(id, userName, type, address, password, name, lastName, surName, age);
     data.save(user);
   }
   /**
@@ -85,10 +85,10 @@ public class UserServicesImp implements UserServices {
    * @param product product to add
    */
   @Override
-  public void addProductToShoppingCart(int id, Product product) {
+  public void addProductToShoppingCart(int id, Product product, int quantity) {
     ShoppingCart shoppingCart = data.getOne(id).getShoppingCart();
     if (shoppingCart != null){
-      shoppingCart.addProduct(product);
+      shoppingCart.addProduct(product, quantity);
       data.getOne(id).setShoppingCart(shoppingCart);
     }
     else throw new RuntimeException("the entered id is not valid");

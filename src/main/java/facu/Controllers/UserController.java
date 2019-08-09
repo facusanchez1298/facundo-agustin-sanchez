@@ -1,7 +1,7 @@
-package facu.Controllers;
+package facu.controllers;
 
-import facu.DAO.models.User;
-import facu.Services.incerfaces.UserServices;
+import facu.dao.models.User;
+import facu.services.incerfaces.UserServices;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class UserController {
    * save a new user in the database
    * @param user
    */
-  @PostMapping(value = "/users")
+  @PostMapping(value = "/signup")
   public void createNewUser(@RequestBody User user){
     userServices.saveUser(user);
   }

@@ -1,4 +1,4 @@
-package facu.DAO.models;
+package facu.dao.models;
 
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -26,7 +26,7 @@ public class Orders {
 
   public Orders(){}
 
-  public Orders( ShoppingCart shoppingCarts) {
+  public Orders(ShoppingCart shoppingCarts) {
     this.shoppingCarts = shoppingCarts;
     this.date = new Date();
   }

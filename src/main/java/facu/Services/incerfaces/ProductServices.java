@@ -1,6 +1,6 @@
-package facu.Services.incerfaces;
+package facu.services.incerfaces;
 
-import facu.DAO.models.Product;
+import facu.dao.models.Product;
 import java.util.List;
 
 public interface ProductServices {

@@ -1,6 +1,6 @@
-package facu.Services.incerfaces;
+package facu.services.incerfaces;
 
-import facu.DAO.models.Product;
+import facu.dao.models.Product;
 
 public interface ShoppingCartServices {
   /**
@@ -8,7 +8,7 @@ public interface ShoppingCartServices {
    * @param product product to add
    * @param id_user user id from the sopping cart
    */
-  void addProduct(int id_user, Product product);
+  void addProduct(int id_user, Product product, int quantity);
   /**
    * remove a product from the shopping cart
    * @param id_product product id to remove
@@ -22,6 +22,7 @@ public interface ShoppingCartServices {
   void buy(int id_user);
   /**
    * empty the shopping cart
+   * @param id_user user id from the shopping cart
    */
   void emptyShoppingCart(int id_user);
 }

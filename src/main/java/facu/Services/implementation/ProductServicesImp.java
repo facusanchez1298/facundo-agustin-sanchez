@@ -1,8 +1,9 @@
-package facu.Services.implementation;
+package facu.services.implementation;
 
-import facu.DAO.interfaces.DaoProduct;
-import facu.DAO.models.Product;
-import facu.Services.incerfaces.ProductServices;
+import facu.dao.interfaces.DaoProduct;
+import facu.dao.models.Product;
+import facu.excepciones.ProductNullException;
+import facu.services.incerfaces.ProductServices;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class ProductServicesImp implements ProductServices {
    */
   @Override
   public void createNewProduct(Product product) {
-    if (product == null) throw new RuntimeException("the product is not valid");
+    if (product == null) throw new ProductNullException("the product is not valid");
     data.save(product);
   }
   /**
@@ -49,7 +50,7 @@ public class ProductServicesImp implements ProductServices {
   @Override
   public void updateProduct(int id, String name, float price, String description) {
     Product product = data.findById(id).get();
-    if(product == null) throw new RuntimeException("product id is not exists");
+    if(product == null) throw new ProductNullException("product is not exists");
     else {
       product.setDescription(description);
       product.setName(name);
@@ -66,7 +67,7 @@ public class ProductServicesImp implements ProductServices {
   public Product getProductById(int id) {
      Product product = data.findById(id).get();
      if (product != null) return product;
-     else throw  new RuntimeException("the product id not exist");
+     else throw  new ProductNullException("the product id not exist");
   }
   /**
    * get all the product in the data base
@@ -76,7 +77,7 @@ public class ProductServicesImp implements ProductServices {
   public Iterable<Product> getAllProducts() {
     Iterable<Product> products = data.findAll();
     if(products != null) return products;
-    else throw new RuntimeException("you don't have products");
+    else throw new ProductNullException("you don't have products");
   }
   /**
    * edit a product in the data base
@@ -85,7 +86,7 @@ public class ProductServicesImp implements ProductServices {
    */
   @Override
   public void updateProduct(int id, Product product) {
-    if(product == null) throw new RuntimeException("the product entered is not valid");
+    if(product == null) throw new ProductNullException("the product entered is not valid");
     Product dbProduct = data.getOne(id);
     if(product != null){
       product.setId(id);
@@ -94,17 +95,30 @@ public class ProductServicesImp implements ProductServices {
     }
     throw new RuntimeException("the id entered is not valid");
   }
-
+  /**
+   * return a product list with this mame and category
+   * @param name product name to search
+   * @param category product category to search
+   * @return a product list with this mame and category
+   */
   @Override
   public List<Product> findByNameAndCategory(String name, String category) {
     return data.findByNameAndCategory(name,category);
   }
-
+  /**
+   * return a product list with the entered name
+   * @param name product name from the product to search
+   * @return a product list with the entered name
+   */
   @Override
   public List<Product> findByName(String name) {
     return data.findByName(name);
   }
-
+  /**
+   * return a product list with the entered category
+   * @param category product category from the product to search
+   * @return a product list with the entered category
+   */
   @Override
   public List<Product> findByCategory(String category) {
     return data.findByCategory(category);

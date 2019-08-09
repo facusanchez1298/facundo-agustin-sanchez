@@ -1,4 +1,4 @@
-package facu.DAO.models;
+package facu.dao.models;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,10 +17,10 @@ public class User {
   private int id;
   @Column(name = "user_Name")
   private String userName;
-  @Column(name = "address")
-  private String address;
   @Column(name = "password")
   private String password;
+  @Column(name = "user_type")
+  private String userType;
   @Column(name = "name")
   private String name;
   @Column(name = "last_Name")
@@ -29,6 +29,8 @@ public class User {
   private String surName;
   @Column(name = "age")
   private int age;
+  @Column(name = "address")
+  private String address;
   @ManyToOne(optional = false, cascade = CascadeType.ALL)
   @JoinColumn(name = "id_shoppingCart", nullable = false)
   private ShoppingCart shoppingCart;
@@ -37,9 +39,10 @@ public class User {
 
   }
 
-  public User(int id, String userName, String address, String password, String name, String lastName, String surName, int age) {
+  public User(int id, String userName, String userType, String address, String password, String name, String lastName, String surName, int age) {
     this.id = id;
     this.userName = userName;
+    this.userType = userType;
     this.address = address;
     this.password = password;
     this.name = name;
@@ -64,20 +67,20 @@ public class User {
     this.userName = userName;
   }
 
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
   public String getPassword() {
     return password;
   }
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getUserType() {
+    return userType;
+  }
+
+  public void setUserType(String userType) {
+    this.userType = userType;
   }
 
   public String getName() {
@@ -110,6 +113,14 @@ public class User {
 
   public void setAge(int age) {
     this.age = age;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
   }
 
   public ShoppingCart getShoppingCart() {

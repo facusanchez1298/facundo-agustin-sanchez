@@ -1,4 +1,4 @@
-package facu.DAO.models;
+package facu.dao.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +18,14 @@ public class ShoppingCart {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Column(name = "id_ShoppingCart", updatable = false, nullable = false)
   private int id;
-  @Column(name = "quantity", nullable = false)
-  private int quantity;
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "id_user")
   private User user;
-  @OneToMany(cascade = CascadeType.ALL)
-  private List<Product> products = new ArrayList<>();
-
-
+  @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
+  /*@JoinTable(name = "product_shoppingcart",
+  joinColumns = @JoinColumn(name = "id_shoppingCart", nullable = false),
+  inverseJoinColumns = @JoinColumn(name = "id_product",nullable = false))*/
+  private List<Products> products = new ArrayList<>();
 
   public ShoppingCart(){}
 
@@ -38,14 +37,6 @@ public class ShoppingCart {
     this.id = id;
   }
 
-  public int getQuantity() {
-    return quantity;
-  }
-
-  public void setQuantity(int quantity) {
-    this.quantity = quantity;
-  }
-
   public User getUser() {
     return user;
   }
@@ -54,30 +45,27 @@ public class ShoppingCart {
     this.user = user;
   }
 
-  public List<Product> getProducts() {
+  public List<Products> getProducts() {
     return products;
   }
 
-  public void setProducts(List<Product> products) {
+  public void setProducts(List<Products> products) {
     this.products = products;
   }
 
-  public void addProduct(Product product){
-    this.products.add(product);
+  public void addProduct(Product product, int quantity){
+    this.products.add(new Products(product, this, quantity));
   }
 
   public void removeProduct(Product product){
-    this.products.remove(product);
+    this.products.removeIf(q-> q.getProduct() == product && q.getShoppingCart() == this);
   }
 
   public void removeProduct(int id_product) {
-    this.products.removeIf(q-> q.getId() == id_product);
+    this.products.removeIf(q-> q.getProduct().getId() == id_product && q.getShoppingCart() == this);
   }
 
   public void clear() {
     this.products.clear();
   }
-
-
-
 }

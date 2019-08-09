@@ -1,10 +1,14 @@
-package facu.DAO.models;
+package facu.dao.models;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Product {
@@ -20,6 +24,8 @@ public class Product {
   private String description;
   @Column
   private String category;
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+  private List<Products> products = new ArrayList<>();
 
   public Product(){}
 
@@ -74,5 +80,13 @@ public class Product {
 
   public void setCategory(String category) {
     this.category = category;
+  }
+
+  public List<Products> getProducts() {
+    return products;
+  }
+
+  public void setProducts(List<Products> products) {
+    this.products = products;
   }
 }

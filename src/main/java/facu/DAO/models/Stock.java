@@ -1,4 +1,4 @@
-package facu.DAO.models;
+package facu.dao.models;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +18,7 @@ public class Stock {
   @Column(name = "id_stock", updatable = false, nullable = false)
   private int id;
   @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "product")
+  @JoinColumn(name = "id_product")
   private Product products;
   @Column
   private int quantity;
@@ -26,6 +26,12 @@ public class Stock {
   private boolean available;
 
   public Stock(){}
+
+  public Stock(Product product, int quantity, boolean available){
+    this.products = product;
+    this.quantity = quantity;
+    this.available = available;
+  }
 
   public int getId() {
     return id;
@@ -57,5 +63,13 @@ public class Stock {
 
   public void setAvailable(boolean available) {
     this.available = available;
+  }
+
+  public void subtract(int quantity){
+    this.quantity -= quantity;
+  }
+
+  public void add(int quantity){
+    this.quantity += quantity;
   }
 }

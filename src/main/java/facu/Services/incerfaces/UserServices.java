@@ -1,7 +1,7 @@
-package facu.Services.incerfaces;
+package facu.services.incerfaces;
 
-import facu.DAO.models.Product;
-import facu.DAO.models.User;
+import facu.dao.models.Product;
+import facu.dao.models.User;
 import java.util.List;
 
 
@@ -17,7 +17,7 @@ public interface UserServices {
    * @param surName user sur name for the new product
    * @param age user age for the new product
    */
-  public void saveUser(int id, String userName, String address, String password, String name,
+  public void saveUser(int id, String userName,String type, String address, String password, String name,
     String lastName, String surName, int age);
   /**
    * save a new user in the database
@@ -51,5 +51,5 @@ public interface UserServices {
    * @param id user id
    * @param product product to add
    */
-  void addProductToShoppingCart(int id, Product product);
+  void addProductToShoppingCart(int id, Product product, int quantity);
 }

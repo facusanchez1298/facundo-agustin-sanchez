@@ -1,9 +1,10 @@
-package facu.Controllers;
+package facu.controllers;
 
-import facu.DAO.models.Product;
-import facu.Services.incerfaces.ProductServices;
+import facu.dao.models.Product;
+import facu.services.incerfaces.ProductServices;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,9 +42,7 @@ public class ProductController {
    */
   @GetMapping(value = "/products/{id}")
   public Product getProductById(@PathVariable("id") @NotBlank int id){
-    Product product = data.getProductById(id);
-    if (product != null) return product;
-    throw new RuntimeException("the entered id is not valid");
+    return data.getProductById(id);
   }
   /**
    * find products by name and category
@@ -51,9 +50,9 @@ public class ProductController {
    * @param category product category
    * @return a list of product
    */
-  @GetMapping(value = "/products/find")
-  public List<Product> getproductsByNameAndCategory(@RequestParam(value = "name", defaultValue = "") String name,
-    @RequestParam(value = "category", defaultValue = "") String category){
+  @GetMapping(value = "/products/findBy")
+  public List<Product> getproductsByNameAndCategory(@RequestParam(value = "name") @NotBlank @NotNull String name,
+    @RequestParam(value = "category") @NotBlank @NotNull String category){
     return data.findByNameAndCategory(name, category);
   }
   /**
@@ -71,7 +70,6 @@ public class ProductController {
    */
   @PutMapping(value = "/products/{id}")
   public void updateProduct(@PathVariable @NotBlank int id, @RequestBody Product product){
-    if(product == null) throw new RuntimeException("the entered product is not valid");
     data.updateProduct(id, product );
   }
 }
