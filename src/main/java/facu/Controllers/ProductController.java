@@ -1,7 +1,8 @@
 package facu.Controllers;
 
-import facu.DAO.tables.Product;
+import facu.DAO.models.Product;
 import facu.Services.incerfaces.ProductServices;
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -42,6 +44,17 @@ public class ProductController {
     Product product = data.getProductById(id);
     if (product != null) return product;
     throw new RuntimeException("the entered id is not valid");
+  }
+  /**
+   * find products by name and category
+   * @param name product name
+   * @param category product category
+   * @return a list of product
+   */
+  @GetMapping(value = "/products/find")
+  public List<Product> getproductsByNameAndCategory(@RequestParam(value = "name", defaultValue = "") String name,
+    @RequestParam(value = "category", defaultValue = "") String category){
+    return data.findByNameAndCategory(name, category);
   }
   /**
    * return all the product in the data Base

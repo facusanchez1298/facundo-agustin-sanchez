@@ -1,10 +1,12 @@
-package facu.DAO.tables;
+package facu.DAO.models;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -12,9 +14,11 @@ import javax.persistence.Table;
 @Table(name = "stock")
 public class Stock {
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @Column(name = "id_stock", updatable = false, nullable = false)
   private int id;
-  @OneToOne( cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "product")
   private Product products;
   @Column
   private int quantity;

@@ -1,6 +1,6 @@
 package facu.Controllers;
 
-import facu.DAO.tables.User;
+import facu.DAO.models.User;
 import facu.Services.incerfaces.UserServices;
 import java.util.List;
 import javax.validation.constraints.NotBlank;

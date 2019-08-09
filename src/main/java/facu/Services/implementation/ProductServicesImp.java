@@ -1,8 +1,9 @@
 package facu.Services.implementation;
 
 import facu.DAO.interfaces.DaoProduct;
-import facu.DAO.tables.Product;
+import facu.DAO.models.Product;
 import facu.Services.incerfaces.ProductServices;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -93,4 +94,21 @@ public class ProductServicesImp implements ProductServices {
     }
     throw new RuntimeException("the id entered is not valid");
   }
+
+  @Override
+  public List<Product> findByNameAndCategory(String name, String category) {
+    return data.findByNameAndCategory(name,category);
+  }
+
+  @Override
+  public List<Product> findByName(String name) {
+    return data.findByName(name);
+  }
+
+  @Override
+  public List<Product> findByCategory(String category) {
+    return data.findByCategory(category);
+  }
+
+
 }

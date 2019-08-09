@@ -1,6 +1,7 @@
 package facu.Services.incerfaces;
 
-import facu.DAO.tables.User;
+import facu.DAO.models.Product;
+import facu.DAO.models.User;
 import java.util.List;
 
 
@@ -39,6 +40,16 @@ public interface UserServices {
    * @param id user id to delete
    */
   void removeUserById(int id);
-
+  /**
+   *  edit a user in the data base
+   * @param id user id for update
+   * @param user new data for update
+   */
   void updateUserById(int id, User user);
+  /**
+   * add a product to the shopping cart
+   * @param id user id
+   * @param product product to add
+   */
+  void addProductToShoppingCart(int id, Product product);
 }

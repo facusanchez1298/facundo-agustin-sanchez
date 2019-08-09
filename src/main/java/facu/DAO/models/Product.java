@@ -1,8 +1,7 @@
-package facu.DAO.tables;
+package facu.DAO.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,9 +21,7 @@ public class Product {
   @Column
   private String category;
 
-  public Product(){
-
-  }
+  public Product(){}
 
   public Product(String name, float price, String description) {
     this.name = name;

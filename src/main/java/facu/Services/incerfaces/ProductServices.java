@@ -1,6 +1,7 @@
 package facu.Services.incerfaces;
 
-import facu.DAO.tables.Product;
+import facu.DAO.models.Product;
+import java.util.List;
 
 public interface ProductServices {
   /**
@@ -39,11 +40,29 @@ public interface ProductServices {
    * @return all the product from the data base
    */
   Iterable<Product> getAllProducts();
-
   /**
    * edit a product in the data base
    * @param id product id from the product to edit
    * @param product new data for this product
    */
   void updateProduct(int id, Product product);
+  /**
+   * search for a product name like the entered and category equal the entered
+   * @param name product name to search
+   * @param category product category to search
+   * @return a list of product whit entered name and category
+   */
+  List<Product> findByNameAndCategory(String name, String category);
+  /**
+   * find products by name
+   * @param name product name from the product to search
+   * @return a list of product with the same name entered
+   */
+  List<Product> findByName(String name);
+  /**
+   * find products by category
+   * @param category product category from the product to search
+   * @return a list of product with the same category entered
+   */
+  List<Product> findByCategory(String category);
 }

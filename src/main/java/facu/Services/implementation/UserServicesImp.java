@@ -1,7 +1,9 @@
 package facu.Services.implementation;
 
 import facu.DAO.interfaces.DaoUser;
-import facu.DAO.tables.User;
+import facu.DAO.models.Product;
+import facu.DAO.models.ShoppingCart;
+import facu.DAO.models.User;
 import facu.Services.incerfaces.UserServices;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +79,18 @@ public class UserServicesImp implements UserServices {
     }
     else throw new RuntimeException("the id entered is not valid");
   }
-
+  /**
+   * add a product to the shopping cart
+   * @param id user id
+   * @param product product to add
+   */
+  @Override
+  public void addProductToShoppingCart(int id, Product product) {
+    ShoppingCart shoppingCart = data.getOne(id).getShoppingCart();
+    if (shoppingCart != null){
+      shoppingCart.addProduct(product);
+      data.getOne(id).setShoppingCart(shoppingCart);
+    }
+    else throw new RuntimeException("the entered id is not valid");
+  }
 }

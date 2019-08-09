@@ -1,10 +1,13 @@
-package facu.DAO.tables;
+package facu.DAO.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class User {
@@ -26,6 +29,9 @@ public class User {
   private String surName;
   @Column(name = "age")
   private int age;
+  @ManyToOne(optional = false, cascade = CascadeType.ALL)
+  @JoinColumn(name = "id_shoppingCart", nullable = false)
+  private ShoppingCart shoppingCart;
 
   public User(){
 
@@ -105,4 +111,14 @@ public class User {
   public void setAge(int age) {
     this.age = age;
   }
+
+  public ShoppingCart getShoppingCart() {
+    return shoppingCart;
+  }
+
+  public void setShoppingCart(ShoppingCart shoppingCart) {
+    this.shoppingCart = shoppingCart;
+  }
 }
+
+
