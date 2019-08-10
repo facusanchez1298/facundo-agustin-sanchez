@@ -37,13 +37,13 @@ public interface StockServices {
    * @param productId product to search
    * @return the product quantity in stock
    */
-  int QuantityOf(int productId);
+  int quantityOf(int productId);
   /**
    * return the product quantity in stock
    * @param product product to search
    * @return the product quantity in stock
    */
-  int QuantityOf(Product product);
+  int quantityOf(Product product);
   /**
    * add a product to stock
    * @param product product to add

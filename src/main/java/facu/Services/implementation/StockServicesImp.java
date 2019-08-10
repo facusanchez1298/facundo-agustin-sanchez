@@ -74,7 +74,7 @@ public class StockServicesImp implements StockServices {
    * @return the product quantity in stock
    */
   @Override
-  public int QuantityOf(int productId) {
+  public int quantityOf(int productId) {
     Stock stock = data.findByProductId(productId);
     if(stock == null)
       throw new StockNullException("the entered id is not valid");
@@ -86,7 +86,7 @@ public class StockServicesImp implements StockServices {
    * @return the product quantity in stock
    */
   @Override
-  public int QuantityOf(Product product) {
+  public int quantityOf(Product product) {
     if(product == null)
       throw new ProductNullException("the product entered is not valid");
     Stock stock = data.findByProducts(product);

@@ -22,9 +22,6 @@ public class ShoppingCart {
   @JoinColumn(name = "id_user")
   private User user;
   @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
-  /*@JoinTable(name = "product_shoppingcart",
-  joinColumns = @JoinColumn(name = "id_shoppingCart", nullable = false),
-  inverseJoinColumns = @JoinColumn(name = "id_product",nullable = false))*/
   private List<Products> products = new ArrayList<>();
 
   public ShoppingCart(){}
