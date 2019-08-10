@@ -50,10 +50,28 @@ public class ProductController {
    * @param category product category
    * @return a list of product
    */
-  @GetMapping(value = "/products/findBy")
+  @GetMapping(value = "/products", params = {"name", "category"})
   public List<Product> getproductsByNameAndCategory(@RequestParam(value = "name") @NotBlank @NotNull String name,
     @RequestParam(value = "category") @NotBlank @NotNull String category){
     return data.findByNameAndCategory(name, category);
+  }
+  /**
+   * find products by name and category
+   * @param category product category
+   * @return a list of product
+   */
+  @GetMapping(value = "/products", params =  "category")
+  public List<Product> getproductsByCategory(@RequestParam(value = "category") @NotBlank @NotNull String category){
+    return data.findByCategory(category);
+  }
+  /**
+   * find products by name and category
+   * @param name product name
+   * @return a list of product
+   */
+  @GetMapping(value = "/products", params = "name")
+  public List<Product> getproductsByName(@RequestParam(value = "name") @NotBlank @NotNull String name){
+    return data.findByName(name);
   }
   /**
    * return all the product in the data Base

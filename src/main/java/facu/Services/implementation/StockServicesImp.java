@@ -4,6 +4,7 @@ import facu.dao.interfaces.DaoProduct;
 import facu.dao.interfaces.DaoStock;
 import facu.dao.models.Product;
 import facu.dao.models.Stock;
+import facu.excepciones.LowerQuantityException;
 import facu.excepciones.ProductNullException;
 import facu.excepciones.StockExistingException;
 import facu.excepciones.StockNullException;
@@ -63,7 +64,7 @@ public class StockServicesImp implements StockServices {
   public boolean isAvailable(Product product) {
     if(product == null)
       throw new ProductNullException("the product entered is null");
-    Stock stock = data.findByProducts(product);
+    Stock stock = data.findByProduct(product);
     if(stock == null)
       throw new StockNullException("the entered id is not valid");
     return stock.isAvailable();
@@ -89,7 +90,7 @@ public class StockServicesImp implements StockServices {
   public int quantityOf(Product product) {
     if(product == null)
       throw new ProductNullException("the product entered is not valid");
-    Stock stock = data.findByProducts(product);
+    Stock stock = data.findByProduct(product);
     if(stock == null)
       throw new StockNullException("the entered id is not valid");
     return stock.getQuantity();
@@ -97,14 +98,16 @@ public class StockServicesImp implements StockServices {
   /**
    * add a product to stock
    * @param product product to add
+   * @param quantity product quantity
+   * @param available is available?
    */
   @Override
   public void addProduct(Product product, int quantity, boolean available) {
     if (quantity < 0)
-      throw new RuntimeException("the entered number can't be lower to 0");
+      throw new LowerQuantityException("the entered number can't be lower to 0");
     if(product == null)
       throw new ProductNullException("the product entered is not valid");
-    Stock stock = data.findByProducts(product);
+    Stock stock = data.findByProduct(product);
     if(stock != null)
       throw new StockExistingException("the entered product exists in stock");
     data.save(new Stock(product, quantity, available));
@@ -112,11 +115,13 @@ public class StockServicesImp implements StockServices {
   /**
    * add a product to stock
    * @param productId product to add
+   * @param quantity product quantity
+   * @param available is available?
    */
   @Override
   public void addProduct(int productId, int quantity, boolean available) {
     if (quantity < 0)
-      throw new RuntimeException("the entered number can't be lower to 0");
+      throw new LowerQuantityException("the entered number can't be lower to 0");
     Stock stock = data.findByProductId(productId);
     if(stock != null)
       throw new StockExistingException("the entered product exists in stock");
@@ -131,10 +136,10 @@ public class StockServicesImp implements StockServices {
    * @param available product state to change
    */
   @Override
-  public void disableProduct(Product product, boolean available) {
+  public void setAvailableProduct(Product product, boolean available) {
     if(product == null)
       throw new ProductNullException("the product entered is null");
-    Stock stock = data.findByProducts(product);
+    Stock stock = data.findByProduct(product);
     if(stock == null)
       throw new StockNullException("the entered id is not valid");
     stock.setAvailable(available);
@@ -145,7 +150,7 @@ public class StockServicesImp implements StockServices {
    * @param productId product to disable
    */
   @Override
-  public void disableProduct(int productId, boolean available) {
+  public void setAvailableProduct(int productId, boolean available) {
     Stock stock = data.findByProductId(productId);
     if(stock == null)
       throw new StockNullException("the entered id is not valid");
@@ -157,14 +162,14 @@ public class StockServicesImp implements StockServices {
    * @param quantity product quantity
    */
   @Override
-  public void defineQuantity(Product product, int quantity) {
+  public void setQuantity(Product product, int quantity) {
     if(product == null)
       throw new ProductNullException("the product entered is null");
-    Stock stock = data.findByProducts(product);
+    Stock stock = data.findByProduct(product);
     if(stock == null)
       throw new StockNullException("the entered id is not valid");
     if (quantity < 0)
-      throw new RuntimeException("the entered number can't be lower to 0");
+      throw new LowerQuantityException("the entered number can't be lower to 0");
     stock.setQuantity(quantity);
   }
   /**
@@ -173,9 +178,9 @@ public class StockServicesImp implements StockServices {
    * @param quantity product quantity
    */
   @Override
-  public void defineQuantity(int productId, int quantity) {
+  public void setQuantity(int productId, int quantity) {
     if (quantity < 0)
-      throw new RuntimeException("the entered number can't be lower to 0");
+      throw new LowerQuantityException("the entered number can't be lower to 0");
     Stock stock = data.findByProductId(productId);
     if(stock == null)
       throw new StockNullException("the entered id is not valid");

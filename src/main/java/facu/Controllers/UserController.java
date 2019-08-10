@@ -1,6 +1,8 @@
 package facu.controllers;
 
+import facu.dao.models.Login;
 import facu.dao.models.User;
+import facu.excepciones.UserNullExeption;
 import facu.services.incerfaces.UserServices;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
@@ -16,22 +18,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
   @Autowired
-  private UserServices userServices;
+  private UserServices dbUser;
   /**
    * save a new user in the database
    * @param user
    */
-  @PostMapping(value = "/signup")
+  @PostMapping(value = "/signUp")
   public void createNewUser(@RequestBody User user){
-    userServices.saveUser(user);
+    dbUser.saveUser(user);
   }
   /**
    * get all the users in the data base
    * @return all the users in the data base
    */
+  @GetMapping(value = "/logIn")
+  public String logIn(@RequestBody Login login){
+    User user = dbUser.findByUserName(login.getUserName());
+    if (user == null)
+      throw new UserNullExeption("the entered user name is not valid");
+    if(!user.getPassword().equals(login.getPassword()))
+      throw new UserNullExeption("the entered password is not valid");
+    return "200: action successful";
+  }
+
   @GetMapping(value = "/users")
   public List<User> getUser(){
-    return userServices.findAll();
+    return dbUser.findAll();
   }
   /**
    * return a user by him id
@@ -40,7 +52,7 @@ public class UserController {
    */
   @GetMapping(value = "/users/{id}")
   public User getUserById(@PathVariable("id") @NotBlank int id){
-    return userServices.findById(id);
+    return dbUser.findById(id);
   }
   /**
    * remove a user from the data base
@@ -48,7 +60,7 @@ public class UserController {
    */
   @DeleteMapping(value = "/users/{id}")
   public void deleteUser(@PathVariable("id") @NotBlank int id){
-    userServices.removeUserById(id);
+    dbUser.removeUserById(id);
   }
   /**
    * edit a user in the data base
@@ -57,6 +69,6 @@ public class UserController {
    */
   @PutMapping(value = "/users/{id}")
   public void updateUser(@PathVariable("id") @NotBlank int id, @RequestBody User user){
-    userServices.updateUserById(id, user);
+    dbUser.updateUserById(id, user);
   }
 }

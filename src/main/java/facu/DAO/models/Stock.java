@@ -9,26 +9,30 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "Stock")
 @Table(name = "stock")
 public class Stock {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_stock", updatable = false, nullable = false)
   private int id;
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "id_product")
-  private Product products;
+  @NotNull
+  private Product product;
   @Column
-  private int quantity;
+  @NotNull
+  private Integer quantity;
   @Column
-  private boolean available;
+  @NotNull
+  private Boolean available;
 
   public Stock(){}
 
-  public Stock(Product product, int quantity, boolean available){
-    this.products = product;
+  public Stock(@NotNull Product product, int quantity, boolean available){
+    this.product = product;
     this.quantity = quantity;
     this.available = available;
   }
@@ -41,12 +45,12 @@ public class Stock {
     this.id = id;
   }
 
-  public Product getProducts() {
-    return products;
+  public Product getProduct() {
+    return product;
   }
 
-  public void setProducts(Product products) {
-    this.products = products;
+  public void setProduct(@NotNull Product product) {
+    this.product = product;
   }
 
   public int getQuantity() {

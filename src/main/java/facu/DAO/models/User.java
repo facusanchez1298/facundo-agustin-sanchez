@@ -8,47 +8,62 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_user", updatable = false, nullable = false)
   private int id;
-  @Column(name = "user_Name")
+  @Column(name = "user_Name", unique = true)
+  @NotBlank
   private String userName;
   @Column(name = "password")
+  @NotBlank
   private String password;
   @Column(name = "user_type")
+  @NotBlank
   private String userType;
   @Column(name = "name")
+  @NotBlank
   private String name;
   @Column(name = "last_Name")
+  @NotBlank
   private String lastName;
   @Column(name = "sur_name")
+  @NotBlank
   private String surName;
   @Column(name = "age")
-  private int age;
+  @NotNull
+  private Integer age;
   @Column(name = "address")
+  @NotBlank
   private String address;
   @ManyToOne(optional = false, cascade = CascadeType.ALL)
   @JoinColumn(name = "id_shoppingCart", nullable = false)
-  private ShoppingCart shoppingCart;
+  private ShoppingCart shoppingCart = new ShoppingCart();
 
   public User(){
 
   }
 
-  public User(int id, String userName, String userType, String address, String password, String name, String lastName, String surName, int age) {
+  public User(int id, @NotBlank String userName,
+    @NotBlank String password, @NotBlank String userType,
+    @NotBlank String name, @NotBlank String lastName,
+    @NotBlank String surName, @NotNull Integer age,
+    @NotBlank String address) {
     this.id = id;
     this.userName = userName;
-    this.userType = userType;
-    this.address = address;
     this.password = password;
+    this.userType = userType;
     this.name = name;
     this.lastName = lastName;
     this.surName = surName;
     this.age = age;
+    this.address = address;
   }
 
   public int getId() {
@@ -107,11 +122,11 @@ public class User {
     this.surName = surName;
   }
 
-  public int getAge() {
+  public Integer getAge() {
     return age;
   }
 
-  public void setAge(int age) {
+  public void setAge(Integer age) {
     this.age = age;
   }
 

@@ -9,30 +9,43 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "product_shoppingCart")
 @IdClass(ProductsId.class)
 public class Products {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int productId;
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int shoppingCartId;
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "id_product", referencedColumnName = "id_product", insertable = false, updatable = false)
+  @NotNull
   private Product product;
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "id_product", referencedColumnName = "id_shoppingCart", insertable = false, updatable = false)
+  @NotNull
   private ShoppingCart shoppingCart;
   @Column(name = "quantity", nullable = false)
-  private int quantity;
+  @NotNull
+  @Min(0)
+  private Integer quantity;
 
   public Products(){}
 
-  public Products(Product product, ShoppingCart shoppingCart, int quantity) {
+  public Products(@NotNull Product product, @NotNull ShoppingCart shoppingCart, int quantity) {
     this.product = product;
     this.shoppingCart = shoppingCart;
+    this.quantity = quantity;
+  }
+
+  public Products(int productId, int shoppingCartId,
+    @NotNull @Min(0) Integer quantity) {
+    this.productId = productId;
+    this.shoppingCartId = shoppingCartId;
     this.quantity = quantity;
   }
 

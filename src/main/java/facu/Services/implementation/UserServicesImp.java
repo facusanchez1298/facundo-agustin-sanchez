@@ -1,9 +1,11 @@
 package facu.services.implementation;
 
+import facu.dao.interfaces.DaoShoppingCart;
 import facu.dao.interfaces.DaoUser;
 import facu.dao.models.Product;
 import facu.dao.models.ShoppingCart;
 import facu.dao.models.User;
+import facu.excepciones.UserNullExeption;
 import facu.services.incerfaces.UserServices;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +14,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServicesImp implements UserServices {
   @Autowired
-  private DaoUser data;
+  private DaoUser dbUser;
+  @Autowired
+  private DaoShoppingCart dbShoppingCart;
   /**
-   * save a user in the data base
+   * save a user in the dbUser base
    * @param id user id for the new product
    * @param userName user username for the new product
    * @param address
@@ -27,16 +31,16 @@ public class UserServicesImp implements UserServices {
   @Override
   public void saveUser(int id, String userName,String type, String address, String password, String name,
     String lastName, String surName, int age) {
-    User user = new User(id, userName, type, address, password, name, lastName, surName, age);
-    data.save(user);
+    User user = new User(id,userName,password,type,name,lastName,surName,age,address);
+    dbUser.save(user);
   }
   /**
-   * save a user a in the data base
+   * save a user a in the dbUser base
    * @param user user for save
    */
   @Override
   public void saveUser(User user) {
-    data.save(user);
+    dbUser.save(user);
   }
   /**
    * find a user by him id
@@ -45,39 +49,45 @@ public class UserServicesImp implements UserServices {
    */
   @Override
   public User findById(int id) {
-    return data.findById(id).get();
+    return dbUser.findById(id).get();
   }
+
+  @Override
+  public User findByUserName(String userName) {
+    return dbUser.findByUserName(userName);
+  }
+
   /**
    * return all the users in the database
    * @return all the users in the dataBase
    */
   @Override
   public List<User> findAll() {
-    return data.findAll();
+    return dbUser.findAll();
   }
   /**
-   * delete a product from the data base
+   * delete a product from the dbUser base
    * @param id user id to delete
    */
   @Override
   public void removeUserById(int id) {
-    data.deleteById(id);
+    dbUser.deleteById(id);
   }
   /**
-   * update a user in the data base
+   * update a user in the dbUser base
    * @param id user id from user to change
-   * @param user new data for the user
+   * @param user new dbUser for the user
    */
   @Override
   public void updateUserById(int id, User user) {
-    if(user == null) throw new RuntimeException("user is not valid");
-    User dbUser = data.getOne(id);
+    if(user == null) throw new UserNullExeption("user is not valid");
+    User dbUser = this.dbUser.getOne(id);
     if(dbUser != null){
       user.setId(dbUser.getId()); //set the new user id, have to have the same id
       dbUser = user;
-      data.save(dbUser);
+      this.dbUser.save(dbUser);
     }
-    else throw new RuntimeException("the id entered is not valid");
+    else throw new UserNullExeption("the id entered is not valid");
   }
   /**
    * add a product to the shopping cart
@@ -86,11 +96,6 @@ public class UserServicesImp implements UserServices {
    */
   @Override
   public void addProductToShoppingCart(int id, Product product, int quantity) {
-    ShoppingCart shoppingCart = data.getOne(id).getShoppingCart();
-    if (shoppingCart != null){
-      shoppingCart.addProduct(product, quantity);
-      data.getOne(id).setShoppingCart(shoppingCart);
-    }
-    else throw new RuntimeException("the entered id is not valid");
+    dbUser.getOne(id).getShoppingCart().addProduct(product,quantity );
   }
 }

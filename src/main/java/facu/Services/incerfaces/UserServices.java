@@ -31,6 +31,12 @@ public interface UserServices {
    */
   public User findById(int id);
   /**
+   *
+   * @param userName
+   * @return
+   */
+  public User findByUserName(String userName);
+  /**
    * return all the users in the database
    * @return all the users in the dataBase
    */
@@ -52,4 +58,6 @@ public interface UserServices {
    * @param product product to add
    */
   void addProductToShoppingCart(int id, Product product, int quantity);
+
+
 }

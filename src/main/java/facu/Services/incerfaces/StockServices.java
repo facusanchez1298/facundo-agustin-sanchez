@@ -59,25 +59,25 @@ public interface StockServices {
    * @param product product to disable
    * @param available product state to change
    */
-  void disableProduct(Product product, boolean available);
+  void setAvailableProduct(Product product, boolean available);
   /**
    * change a product state from stock product
    * @param available product state to change
    * @param productId product to disable
    */
-  void disableProduct(int productId, boolean available);
+  void setAvailableProduct(int productId, boolean available);
   /**
    * define how much product there is
    * @param product product to change the quantity
    * @param quantity product quantity
    */
-  void defineQuantity(Product product, int quantity);
+  void setQuantity(Product product, int quantity);
   /**
    * define how much product there is
    * @param productId product to change the quantity
    * @param quantity product quantity
    */
-  void defineQuantity(int productId, int quantity);
+  void setQuantity(int productId, int quantity);
 
 
 

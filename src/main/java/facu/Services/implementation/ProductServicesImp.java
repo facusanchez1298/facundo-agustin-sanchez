@@ -93,7 +93,7 @@ public class ProductServicesImp implements ProductServices {
       dbProduct = product;
       data.save(dbProduct);
     }
-    throw new RuntimeException("the id entered is not valid");
+    throw new ProductNullException("the id entered is not valid");
   }
   /**
    * return a product list with this mame and category

@@ -1,5 +1,6 @@
 package facu.dao.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,15 +12,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
 @Entity
 public class Orders {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_Order", updatable = false, nullable = false)
   private int id;
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "id_shoppingCart")
+  @NotNull
   private ShoppingCart shoppingCarts;
   @Temporal(TemporalType.DATE)
   private Date date;

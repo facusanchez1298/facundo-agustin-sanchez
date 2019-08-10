@@ -9,20 +9,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Product {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_product", updatable = false, nullable = false)
   private int id;
   @Column
+  @NotBlank
   private String name;
   @Column
-  private float price;
+  @NotNull
+  private Float price;
   @Column
+  @NotBlank
   private String description;
   @Column
+  @NotBlank
   private String category;
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
   private List<Products> products = new ArrayList<>();
