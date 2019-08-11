@@ -4,44 +4,52 @@ import facu.dao.interfaces.DaoProduct;
 import facu.dao.interfaces.DaoStock;
 import facu.dao.models.Product;
 import facu.dao.models.Stock;
-import facu.excepciones.LowerQuantityException;
-import facu.excepciones.ProductNullException;
-import facu.excepciones.StockExistingException;
-import facu.excepciones.StockNullException;
+import facu.excepciones.ExceptionController;
+import facu.services.incerfaces.LoginServices;
 import facu.services.incerfaces.StockServices;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StockServicesImp implements StockServices {
-  @Autowired
-  private DaoStock data;
-  @Autowired
-  private DaoProduct dbProduct;
+  private final DaoStock dbStock;
+  private final DaoProduct dbProduct;
+  private final LoginServices dbLogin;
+  private final ExceptionController controller;
+
+  public StockServicesImp(DaoStock data, DaoProduct dbProduct,
+    LoginServices dbLogin, ExceptionController controller) {
+    this.dbStock = data;
+    this.dbProduct = dbProduct;
+    this.dbLogin = dbLogin;
+    this.controller = controller;
+  }
   /**
    * return all products in stock
    * @return all products in stock
    */
   @Override
-  public List<Stock> getAll() {
-    return data.findAll();
+  public List<Stock> getAll(String authorization ) {
+    dbLogin.correctCode(authorization);
+    return dbStock.findAll();
   }
   /**
    * return all the available products in stock
    * @return all the available products in stock
    */
   @Override
-  public List<Stock> getAvailables() {
-    return data.findByAvailable(true);
+  public List<Stock> getAvailables(String authorization) {
+    dbLogin.correctCode(authorization);
+    return dbStock.findByAvailable(true);
   }
   /**
    * return all the inavailable products in stock
    * @return all the inavailable products in stock
    */
   @Override
-  public List<Stock> getInavailables() {
-    return data.findByAvailable(false);
+  public List<Stock> getInavailables(String authorization) {
+    dbLogin.correctCode(authorization);
+    return dbStock.findByAvailable(false);
   }
   /**
    * return true if the product is available
@@ -49,10 +57,10 @@ public class StockServicesImp implements StockServices {
    * @return true if the product is available
    */
   @Override
-  public boolean isAvailable(int productId) {
-    Stock stock = data.findByProductId(productId);
-    if(stock == null)
-      throw new StockNullException("the entered id is not valid");
+  public boolean isAvailable(String authorization, int productId) {
+    dbLogin.correctCode(authorization);
+    Stock stock = dbStock.findByProductId(productId);
+    controller.correctStock(stock);
     return stock.isAvailable();
   }
   /**
@@ -61,12 +69,11 @@ public class StockServicesImp implements StockServices {
    * @return true if the product is available
    */
   @Override
-  public boolean isAvailable(Product product) {
-    if(product == null)
-      throw new ProductNullException("the product entered is null");
-    Stock stock = data.findByProduct(product);
-    if(stock == null)
-      throw new StockNullException("the entered id is not valid");
+  public boolean isAvailable(String authorization, Product product) {
+    dbLogin.correctCode(authorization);
+    controller.correctProduct(product);
+    Stock stock = dbStock.findByProduct(product);
+    controller.correctStock(stock);
     return stock.isAvailable();
   }
   /**
@@ -75,10 +82,10 @@ public class StockServicesImp implements StockServices {
    * @return the product quantity in stock
    */
   @Override
-  public int quantityOf(int productId) {
-    Stock stock = data.findByProductId(productId);
-    if(stock == null)
-      throw new StockNullException("the entered id is not valid");
+  public int quantityOf(String authorization, int productId) {
+    dbLogin.correctCode(authorization);
+    Stock stock = dbStock.findByProductId(productId);
+    controller.correctStock(stock);
     return stock.getQuantity();
   }
   /**
@@ -87,12 +94,11 @@ public class StockServicesImp implements StockServices {
    * @return the product quantity in stock
    */
   @Override
-  public int quantityOf(Product product) {
-    if(product == null)
-      throw new ProductNullException("the product entered is not valid");
-    Stock stock = data.findByProduct(product);
-    if(stock == null)
-      throw new StockNullException("the entered id is not valid");
+  public int quantityOf(String authorization, Product product) {
+    dbLogin.correctCode(authorization);
+    controller.correctProduct(product);
+    Stock stock = dbStock.findByProduct(product);
+    controller.correctStock(stock);
     return stock.getQuantity();
   }
   /**
@@ -102,15 +108,13 @@ public class StockServicesImp implements StockServices {
    * @param available is available?
    */
   @Override
-  public void addProduct(Product product, int quantity, boolean available) {
-    if (quantity < 0)
-      throw new LowerQuantityException("the entered number can't be lower to 0");
-    if(product == null)
-      throw new ProductNullException("the product entered is not valid");
-    Stock stock = data.findByProduct(product);
-    if(stock != null)
-      throw new StockExistingException("the entered product exists in stock");
-    data.save(new Stock(product, quantity, available));
+  public void addProduct(String authorization, Product product, int quantity, boolean available) {
+    dbLogin.correctCode(authorization);
+    controller.correctQuantity(quantity);
+    controller.correctProduct(product);
+    Stock stock = dbStock.findByProduct(product);
+    controller.correctStock(stock);
+    dbStock.save(new Stock(product, quantity, available));
   }
   /**
    * add a product to stock
@@ -119,16 +123,14 @@ public class StockServicesImp implements StockServices {
    * @param available is available?
    */
   @Override
-  public void addProduct(int productId, int quantity, boolean available) {
-    if (quantity < 0)
-      throw new LowerQuantityException("the entered number can't be lower to 0");
-    Stock stock = data.findByProductId(productId);
-    if(stock != null)
-      throw new StockExistingException("the entered product exists in stock");
+  public void addProduct(String authorization, int productId, int quantity, boolean available) {
+    dbLogin.correctCode(authorization);
+    controller.correctQuantity(quantity);
+    Stock stock = dbStock.findByProductId(productId);
+    controller.correctStock(stock);
     Product product = dbProduct.findById(productId).get();
-    if(product == null)
-      throw new ProductNullException("the entered product id is not valid");
-    data.save(new Stock(product, quantity, available));
+    controller.correctProduct(product);
+    dbStock.save(new Stock(product, quantity, available));
   }
   /**
    * change a product state from stock product
@@ -136,12 +138,11 @@ public class StockServicesImp implements StockServices {
    * @param available product state to change
    */
   @Override
-  public void setAvailableProduct(Product product, boolean available) {
-    if(product == null)
-      throw new ProductNullException("the product entered is null");
-    Stock stock = data.findByProduct(product);
-    if(stock == null)
-      throw new StockNullException("the entered id is not valid");
+  public void setAvailableProduct(String authorization, Product product, boolean available) {
+    dbLogin.correctCode(authorization);
+    controller.correctProduct(product);
+    Stock stock = dbStock.findByProduct(product);
+    controller.correctStock(stock);
     stock.setAvailable(available);
   }
   /**
@@ -150,10 +151,10 @@ public class StockServicesImp implements StockServices {
    * @param productId product to disable
    */
   @Override
-  public void setAvailableProduct(int productId, boolean available) {
-    Stock stock = data.findByProductId(productId);
-    if(stock == null)
-      throw new StockNullException("the entered id is not valid");
+  public void setAvailableProduct(String authorization, int productId, boolean available) {
+    dbLogin.correctCode(authorization);
+    Stock stock = dbStock.findByProductId(productId);
+    controller.correctStock(stock);
     stock.setAvailable(available);
   }
   /**
@@ -162,14 +163,12 @@ public class StockServicesImp implements StockServices {
    * @param quantity product quantity
    */
   @Override
-  public void setQuantity(Product product, int quantity) {
-    if(product == null)
-      throw new ProductNullException("the product entered is null");
-    Stock stock = data.findByProduct(product);
-    if(stock == null)
-      throw new StockNullException("the entered id is not valid");
-    if (quantity < 0)
-      throw new LowerQuantityException("the entered number can't be lower to 0");
+  public void setQuantity(String authorization, Product product, int quantity) {
+    dbLogin.correctCode(authorization);
+    controller.correctQuantity(quantity);
+    controller.correctProduct(product);
+    Stock stock = dbStock.findByProduct(product);
+    controller.correctStock(stock);
     stock.setQuantity(quantity);
   }
   /**
@@ -178,12 +177,11 @@ public class StockServicesImp implements StockServices {
    * @param quantity product quantity
    */
   @Override
-  public void setQuantity(int productId, int quantity) {
-    if (quantity < 0)
-      throw new LowerQuantityException("the entered number can't be lower to 0");
-    Stock stock = data.findByProductId(productId);
-    if(stock == null)
-      throw new StockNullException("the entered id is not valid");
+  public void setQuantity(String authorization, int productId, int quantity) {
+    dbLogin.correctCode(authorization);
+    Stock stock = dbStock.findByProductId(productId);
+    controller.correctQuantity(quantity);
+    controller.correctStock(stock);
     stock.setQuantity(quantity);
   }
 }

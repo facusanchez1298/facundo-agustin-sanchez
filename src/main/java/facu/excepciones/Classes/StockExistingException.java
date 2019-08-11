@@ -1,4 +1,4 @@
-package facu.excepciones;
+package facu.excepciones.Classes;
 
 public class StockExistingException extends RuntimeException {
 

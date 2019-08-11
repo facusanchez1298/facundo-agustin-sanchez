@@ -3,44 +3,26 @@ package facu.services.implementation;
 import facu.dao.interfaces.DaoShoppingCart;
 import facu.dao.interfaces.DaoUser;
 import facu.dao.models.Product;
-import facu.dao.models.ShoppingCart;
 import facu.dao.models.User;
-import facu.excepciones.UserNullExeption;
+import facu.excepciones.ExceptionController;
+import facu.services.incerfaces.LoginServices;
 import facu.services.incerfaces.UserServices;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServicesImp implements UserServices {
-  @Autowired
-  private DaoUser dbUser;
-  @Autowired
-  private DaoShoppingCart dbShoppingCart;
-  /**
-   * save a user in the dbUser base
-   * @param id user id for the new product
-   * @param userName user username for the new product
-   * @param address
-   * @param password user password for the new product
-   * @param name user name for the new product
-   * @param lastName user last name for the new product
-   * @param surName user sur name for the new product
-   * @param age user age for the new product
-   */
-  @Override
-  public void saveUser(int id, String userName,String type, String address, String password, String name,
-    String lastName, String surName, int age) {
-    User user = new User(id,userName,password,type,name,lastName,surName,age,address);
-    dbUser.save(user);
-  }
-  /**
-   * save a user a in the dbUser base
-   * @param user user for save
-   */
-  @Override
-  public void saveUser(User user) {
-    dbUser.save(user);
+  private final DaoUser dbUser;
+  private final DaoShoppingCart dbShoppingCart;
+  private final LoginServices dbLogin;
+  private final ExceptionController controller;
+
+  public UserServicesImp(DaoUser dbUser, DaoShoppingCart dbShoppingCart,
+    LoginServices dbLogin, ExceptionController controller) {
+    this.dbUser = dbUser;
+    this.dbShoppingCart = dbShoppingCart;
+    this.dbLogin = dbLogin;
+    this.controller = controller;
   }
   /**
    * find a user by him id
@@ -48,21 +30,27 @@ public class UserServicesImp implements UserServices {
    * @return a particular id
    */
   @Override
-  public User findById(int id) {
+  public User findById(String authorization, int id) {
+    dbLogin.correctCode(authorization);
     return dbUser.findById(id).get();
   }
-
+  /**
+   * return a user with the user name entered
+   * @param userName user name for search
+   * @return a user with the entered user name
+   */
   @Override
-  public User findByUserName(String userName) {
+  public User findByUserName(String authorization, String userName) {
+    dbLogin.correctCode(authorization);
     return dbUser.findByUserName(userName);
   }
-
   /**
    * return all the users in the database
    * @return all the users in the dataBase
    */
   @Override
-  public List<User> findAll() {
+  public List<User> findAll(String authorization) {
+    dbLogin.correctCode(authorization);
     return dbUser.findAll();
   }
   /**
@@ -70,24 +58,24 @@ public class UserServicesImp implements UserServices {
    * @param id user id to delete
    */
   @Override
-  public void removeUserById(int id) {
+  public void removeUserById(String authorization, int id) {
+    dbLogin.correctCode(authorization);
     dbUser.deleteById(id);
   }
   /**
    * update a user in the dbUser base
-   * @param id user id from user to change
+   * @param userId user id from user to change
    * @param user new dbUser for the user
    */
   @Override
-  public void updateUserById(int id, User user) {
-    if(user == null) throw new UserNullExeption("user is not valid");
-    User dbUser = this.dbUser.getOne(id);
-    if(dbUser != null){
-      user.setId(dbUser.getId()); //set the new user id, have to have the same id
-      dbUser = user;
-      this.dbUser.save(dbUser);
-    }
-    else throw new UserNullExeption("the id entered is not valid");
+  public void updateUserById(String authorization, int userId, User user) {
+    dbLogin.correctCode(authorization);
+    controller.correctUser(user);
+    User dbUser = this.dbUser.getOne(userId);
+    controller.correctUser(dbUser);
+    user.setId(dbUser.getId()); //set the new user id, have to have the same id
+    dbUser = user;
+    this.dbUser.save(dbUser);
   }
   /**
    * add a product to the shopping cart
@@ -95,7 +83,8 @@ public class UserServicesImp implements UserServices {
    * @param product product to add
    */
   @Override
-  public void addProductToShoppingCart(int id, Product product, int quantity) {
+  public void addProductToShoppingCart(String authorization, int id, Product product, int quantity) {
+    dbLogin.correctCode(authorization);
     dbUser.getOne(id).getShoppingCart().addProduct(product,quantity );
   }
 }

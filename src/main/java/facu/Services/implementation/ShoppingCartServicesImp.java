@@ -8,90 +8,86 @@ import facu.dao.models.Product;
 import facu.dao.models.Products;
 import facu.dao.models.ShoppingCart;
 import facu.dao.models.Stock;
-import facu.excepciones.EmptyShoppingCartException;
-import facu.excepciones.NotEnoughStockException;
-import facu.excepciones.ProductNullException;
-import facu.excepciones.UserNullExeption;
+import facu.excepciones.ExceptionController;
+import facu.services.incerfaces.LoginServices;
 import facu.services.incerfaces.ShoppingCartServices;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ShoppingCartServicesImp implements ShoppingCartServices {
-  @Autowired
-  private DaoShoppingCart dbShoppingCart;
-  @Autowired
-  private DaoOrder dbOrder;
-  @Autowired
-  private DaoStock dbStock;
+  private final DaoShoppingCart dbShoppingCart;
+  private final DaoOrder dbOrder;
+  private final DaoStock dbStock;
+  private final LoginServices dbLogin;
+  private final ExceptionController controller;
+
+  public ShoppingCartServicesImp(DaoShoppingCart dbShoppingCart, DaoOrder dbOrder,
+    DaoStock dbStock, LoginServices dbLogin, ExceptionController controller) {
+    this.dbShoppingCart = dbShoppingCart;
+    this.dbOrder = dbOrder;
+    this.dbStock = dbStock;
+    this.dbLogin = dbLogin;
+    this.controller = controller;
+  }
   /**
    * return all the product in the user's shopping cart
    * @param userId user id
-   * @return
+   * @return all the product in the user's shopping cart
    */
   @Override
-  public List<Product> getProducts(int userId) {
+  public List<Product> getProducts(String authorization, int userId) {
     return dbShoppingCart.findByIdUser(userId).getProduct();
   }
   /**
    * add a product to shopping cart
-   * @param id_user user id from the sopping cart
+   * @param userId user id from the sopping cart
    * @param product product to add
    * @param quantity product quantity in stock
    */
   @Override
-  public void addProduct(int id_user, Product product, int quantity) {
-    if(dbShoppingCart.findByIdUser(id_user) == null)
-      throw new UserNullExeption("the entered user id is not valid");
-    if(product == null)
-      throw new ProductNullException("the product entered is not valid");
-    if(dbStock.findByProduct(product).getQuantity() < quantity)
-      throw new NotEnoughStockException("the quantity entered is upper to stock quantity");
-    dbShoppingCart.findByIdUser(id_user).addProduct(product, quantity);
+  public void addProduct(String authorization, int userId, Product product, int quantity) {
+    controller.correctUser(userId);
+    controller.correctProduct(product);
+    controller.enoughStock(product, quantity);
+    dbShoppingCart.findByIdUser(userId).addProduct(product, quantity);
   }
   /**
    * add a product to shopping cart
-   * @param id_user user id from the sopping cart
+   * @param userId user id from the sopping cart
    * @param productId product to add
    * @param quantity product quantity in stock
    */
   @Override
-  public void addProduct(int id_user, int productId, int quantity) {
-    if(dbShoppingCart.findByIdUser(id_user) == null)
-      throw new UserNullExeption("the entered user id is not valid");
-    if(dbStock.findByProductId(productId).getQuantity() < quantity)
-      throw new NotEnoughStockException("the quantity entered is upper to stock quantity");
+  public void addProduct(String authorization, int userId, int productId, int quantity) {
+    controller.correctUser(userId);
+    controller.enoughStock(productId,quantity );
     Product product = dbStock.findByProductId(productId).getProduct();
-    if(product == null)
-      throw new ProductNullException("the entered product id is not valid");
-    dbShoppingCart.findByIdUser(id_user).addProduct(product, quantity);
+    controller.correctProduct(product);
+    dbShoppingCart.findByIdUser(userId).addProduct(product, quantity);
   }
   /**
    * remove a product from the shopping cart
-   * @param id_user user id from the shopping cart
-   * @param id_product product id to remove
+   * @param userId user id from the shopping cart
+   * @param productId product id to remove
    */
   @Override
-  public void removeProduct(int id_user, int id_product) {
-    if(dbShoppingCart.findByIdUser(id_user) == null)
-      throw new UserNullExeption("the entered user id is not valid");
-    dbShoppingCart.findByIdUser(id_user).removeProduct(id_product);
+  public void removeProduct(String authorization, int userId, int productId) {
+    controller.correctUser(userId);
+    dbShoppingCart.findByIdUser(userId).removeProduct(productId);
   }
   /**
    * add the shopping cart to orders an empty it
-   * @param id_user user id from the shopping cart
+   * @param userId user id from the shopping cart
    */
   @Override
-  public void buy(int id_user) {
-    ShoppingCart shoppingCart;
-    if((shoppingCart = dbShoppingCart.findByIdUser(id_user)) == null)
-      throw new UserNullExeption("the entered user id is not valid");
-    if(shoppingCart.getProducts().isEmpty())
-      throw new EmptyShoppingCartException("you can't buy, you shopping cart is empty");
+  public void buy(String authorization, int userId) {
+    ShoppingCart shoppingCart = dbShoppingCart.findByIdUser(userId);
+    controller.correctUser(userId);
+    controller.emptyShoppingCart(shoppingCart);
     subtractFromStock(shoppingCart);
     dbOrder.save(new Orders(shoppingCart));
-    emptyShoppingCart(id_user);
+    emptyShoppingCart(authorization, userId);
   }
   /**
    * subtract all the product in the shopping cart from the stock
@@ -106,12 +102,11 @@ public class ShoppingCartServicesImp implements ShoppingCartServices {
   }
   /**
    * clear the shopping cart
-   * @param id_user user id from the user's shopping cart
+   * @param userId user id from the user's shopping cart
    */
   @Override
-  public void emptyShoppingCart(int id_user) {
-    if((dbShoppingCart.findByIdUser(id_user)) == null)
-      throw new UserNullExeption("the entered user id is not valid");
-    dbShoppingCart.findByIdUser(id_user).clear();
+  public void emptyShoppingCart(String authorization, int userId) {
+    controller.correctUser(userId);
+    dbShoppingCart.findByIdUser(userId).clear();
   }
 }

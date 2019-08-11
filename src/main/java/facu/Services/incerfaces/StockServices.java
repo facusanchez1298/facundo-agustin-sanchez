@@ -9,75 +9,75 @@ public interface StockServices {
    * return all products in stock
    * @return all products in stock
    */
-  List<Stock> getAll();
+  List<Stock> getAll(String authorization);
   /**
    * return all the available products in stock
    * @return all the available products in stock
    */
-  List<Stock> getAvailables();
+  List<Stock> getAvailables(String authorization);
   /**
    * return all the inavailable products in stock
    * @return all the inavailable products in stock
    */
-  List<Stock> getInavailables();
+  List<Stock> getInavailables(String authorization);
   /**
    * return true if the product is available
    * @param productId product to search
    * @return true if the product is available
    */
-  boolean isAvailable(int productId);
+  boolean isAvailable(String authorization, int productId);
   /**
    * return true if the product is available
    * @param product product to search
    * @return true if the product is available
    */
-  boolean isAvailable(Product product);
+  boolean isAvailable(String authorization, Product product);
   /**
    * return the product quantity in stock
    * @param productId product to search
    * @return the product quantity in stock
    */
-  int quantityOf(int productId);
+  int quantityOf(String authorization, int productId);
   /**
    * return the product quantity in stock
    * @param product product to search
    * @return the product quantity in stock
    */
-  int quantityOf(Product product);
+  int quantityOf(String authorization, Product product);
   /**
    * add a product to stock
    * @param product product to add
    */
-  void addProduct(Product product, int quantity, boolean available);
+  void addProduct(String authorization, Product product, int quantity, boolean available);
   /**
    * add a product to stock
    * @param productId product to add
    */
-  void addProduct(int productId, int quantity, boolean available);
+  void addProduct(String authorization, int productId, int quantity, boolean available);
   /**
    * change a product state from stock product
    * @param product product to disable
    * @param available product state to change
    */
-  void setAvailableProduct(Product product, boolean available);
+  void setAvailableProduct(String authorization, Product product, boolean available);
   /**
    * change a product state from stock product
    * @param available product state to change
    * @param productId product to disable
    */
-  void setAvailableProduct(int productId, boolean available);
+  void setAvailableProduct(String authorization, int productId, boolean available);
   /**
    * define how much product there is
    * @param product product to change the quantity
    * @param quantity product quantity
    */
-  void setQuantity(Product product, int quantity);
+  void setQuantity(String authorization, Product product, int quantity);
   /**
    * define how much product there is
    * @param productId product to change the quantity
    * @param quantity product quantity
    */
-  void setQuantity(int productId, int quantity);
+  void setQuantity(String authorization, int productId, int quantity);
 
 
 

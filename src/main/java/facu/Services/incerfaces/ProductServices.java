@@ -8,19 +8,19 @@ public interface ProductServices {
    * add a new product in the data base
    * @param product new product to add
    */
-  void createNewProduct(Product product);
+  void createNewProduct(String authorization, Product product);
   /**
    * create a new product in the data base
    * @param name product name
    * @param price product price
    * @param description product description
    */
-  void createNewProduct(String name, float price, String description);
+  void createNewProduct(String authorization, String name, float price, String description);
   /**
    * delete a product from the database
    * @param id the product id for delete
    */
-  void deleteProductById(int id);
+  void deleteProductById(String authorization, int id);
   /**
    * update a product data from the data base
    * @param id product id
@@ -28,41 +28,41 @@ public interface ProductServices {
    * @param price new product price
    * @param description new product description
    */
-  void updateProduct(int id, String name, float price, String description);
+  void updateProduct(String authorization, int id, String name, float price, String description);
   /**
    * return a particular product from the data base
    * @param id product id
    * @return a product whit the id entered
    */
-  Product getProductById(int id);
+  Product getProductById(String authorization, int id);
   /**
    * return all the product from the data base
    * @return all the product from the data base
    */
-  Iterable<Product> getAllProducts();
+  Iterable<Product> getAllProducts(String authorization);
   /**
    * edit a product in the data base
    * @param id product id from the product to edit
    * @param product new data for this product
    */
-  void updateProduct(int id, Product product);
+  void updateProduct(String authorization, int id, Product product);
   /**
    * search for a product name like the entered and category equal the entered
    * @param name product name to search
    * @param category product category to search
    * @return a list of product whit entered name and category
    */
-  List<Product> findByNameAndCategory(String name, String category);
+  List<Product> findByNameAndCategory(String authorization, String name, String category);
   /**
    * find products by name
    * @param name product name from the product to search
    * @return a list of product with the same name entered
    */
-  List<Product> findByName(String name);
+  List<Product> findByName(String authorization, String name);
   /**
    * find products by category
    * @param category product category from the product to search
    * @return a list of product with the same category entered
    */
-  List<Product> findByCategory(String category);
+  List<Product> findByCategory(String authorization, String category);
 }
