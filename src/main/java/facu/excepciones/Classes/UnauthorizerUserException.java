@@ -1,8 +1,8 @@
 package facu.excepciones.Classes;
 
-public class UserNotValidException extends RuntimeException {
+public class UnauthorizerUserException extends RuntimeException {
 
-  public UserNotValidException(String message) {
+  public UnauthorizerUserException(String message) {
     super(message);
   }
 }

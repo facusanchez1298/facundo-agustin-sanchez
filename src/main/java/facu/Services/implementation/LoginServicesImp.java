@@ -38,14 +38,4 @@ public class LoginServicesImp implements LoginServices {
       throw new UserNullExeption("the entered password is not valid");
     return String.valueOf(user.getId());
   }
-  /**
-   * compare the entered id with the id in data base
-   * @param id user id from the header
-   * @return true if the id is correct else return false
-   */
-  @Override
-  public boolean correctCode(String id) {
-    User user = dbUser.findById(Integer.parseInt(id)).get();
-    return user != null;
-  }
 }

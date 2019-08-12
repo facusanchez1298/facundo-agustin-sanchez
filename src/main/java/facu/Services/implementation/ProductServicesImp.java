@@ -27,6 +27,7 @@ public class ProductServicesImp implements ProductServices {
    */
   @Override
   public void createNewProduct(String authorization, Product product) {
+    controller.correctAuthorization(authorization);
     controller.correctProduct(product);
     dbProduct.save(product);
   }
@@ -38,6 +39,7 @@ public class ProductServicesImp implements ProductServices {
    */
   @Override
   public void createNewProduct(String authorization, String name, float price, String description) {
+    controller.correctAuthorization(authorization);
     Product product = new Product(name, price, description);
     dbProduct.save(product);
   }
@@ -47,6 +49,7 @@ public class ProductServicesImp implements ProductServices {
    */
   @Override
   public void deleteProductById(String authorization, int id) {
+    controller.correctAuthorization(authorization);
     dbProduct.deleteById(id);
   }
   /**
@@ -58,6 +61,7 @@ public class ProductServicesImp implements ProductServices {
    */
   @Override
   public void updateProduct(String authorization, int id, String name, float price, String description) {
+    controller.correctAuthorization(authorization);
     Product product = dbProduct.findById(id).get();
     controller.correctProduct(product);
     product.setDescription(description);
@@ -72,9 +76,11 @@ public class ProductServicesImp implements ProductServices {
    */
   @Override
   public Product getProductById(String authorization, int id) {
-     Product product = dbProduct.findById(id).get();
-     controller.correctProduct(product);
-     return product;
+    controller.correctAuthorization(authorization);
+    controller.correctAuthorization(authorization);
+    Product product = dbProduct.findById(id).get();
+    controller.correctProduct(product);
+    return product;
   }
   /**
    * get all the product in the dbProduct base
@@ -82,6 +88,7 @@ public class ProductServicesImp implements ProductServices {
    */
   @Override
   public Iterable<Product> getAllProducts(String authorization) {
+    controller.correctAuthorization(authorization);
     Iterable<Product> products = dbProduct.findAll();
     return products;
   }
@@ -92,6 +99,7 @@ public class ProductServicesImp implements ProductServices {
    */
   @Override
   public void updateProduct(String authorization, int id, Product product) {
+    controller.correctAuthorization(authorization);
     controller.correctProduct(product);
     Product dbProduct = this.dbProduct.getOne(id);
     controller.correctProduct(product);
@@ -107,6 +115,7 @@ public class ProductServicesImp implements ProductServices {
    */
   @Override
   public List<Product> findByNameAndCategory(String authorization, String name, String category) {
+    controller.correctAuthorization(authorization);
     return dbProduct.findByNameAndCategory(name,category);
   }
   /**
@@ -116,6 +125,7 @@ public class ProductServicesImp implements ProductServices {
    */
   @Override
   public List<Product> findByName(String authorization, String name) {
+    controller.correctAuthorization(authorization);
     return dbProduct.findByName(name);
   }
   /**
@@ -125,6 +135,7 @@ public class ProductServicesImp implements ProductServices {
    */
   @Override
   public List<Product> findByCategory(String authorization, String category) {
+    controller.correctAuthorization(authorization);
     return dbProduct.findByCategory(category);
   }
 

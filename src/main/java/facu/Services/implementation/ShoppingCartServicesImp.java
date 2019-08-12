@@ -37,6 +37,7 @@ public class ShoppingCartServicesImp implements ShoppingCartServices {
    */
   @Override
   public List<Product> getProducts(String authorization, int userId) {
+    controller.correctAuthorization(authorization);
     return dbShoppingCart.findByIdUser(userId).getProduct();
   }
   /**
@@ -47,6 +48,7 @@ public class ShoppingCartServicesImp implements ShoppingCartServices {
    */
   @Override
   public void addProduct(String authorization, int userId, Product product, int quantity) {
+    controller.correctAuthorization(authorization);
     controller.correctUser(userId);
     controller.correctProduct(product);
     controller.enoughStock(product, quantity);
@@ -60,6 +62,7 @@ public class ShoppingCartServicesImp implements ShoppingCartServices {
    */
   @Override
   public void addProduct(String authorization, int userId, int productId, int quantity) {
+    controller.correctAuthorization(authorization);
     controller.correctUser(userId);
     controller.enoughStock(productId,quantity );
     Product product = dbStock.findByProductId(productId).getProduct();
@@ -73,6 +76,7 @@ public class ShoppingCartServicesImp implements ShoppingCartServices {
    */
   @Override
   public void removeProduct(String authorization, int userId, int productId) {
+    controller.correctAuthorization(authorization);
     controller.correctUser(userId);
     dbShoppingCart.findByIdUser(userId).removeProduct(productId);
   }
@@ -82,6 +86,7 @@ public class ShoppingCartServicesImp implements ShoppingCartServices {
    */
   @Override
   public void buy(String authorization, int userId) {
+    controller.correctAuthorization(authorization);
     ShoppingCart shoppingCart = dbShoppingCart.findByIdUser(userId);
     controller.correctUser(userId);
     controller.emptyShoppingCart(shoppingCart);
@@ -106,6 +111,7 @@ public class ShoppingCartServicesImp implements ShoppingCartServices {
    */
   @Override
   public void emptyShoppingCart(String authorization, int userId) {
+    controller.correctAuthorization(authorization);
     controller.correctUser(userId);
     dbShoppingCart.findByIdUser(userId).clear();
   }

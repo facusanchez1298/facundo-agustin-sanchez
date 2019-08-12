@@ -2,6 +2,7 @@ package facu.excepciones;
 
 import facu.dao.interfaces.DaoShoppingCart;
 import facu.dao.interfaces.DaoStock;
+import facu.dao.interfaces.DaoUser;
 import facu.dao.models.Product;
 import facu.dao.models.ShoppingCart;
 import facu.dao.models.Stock;
@@ -11,15 +12,19 @@ import facu.excepciones.Classes.LowerQuantityException;
 import facu.excepciones.Classes.NotEnoughStockException;
 import facu.excepciones.Classes.ProductNullException;
 import facu.excepciones.Classes.StockNullException;
+import facu.excepciones.Classes.UnauthorizerUserException;
 import facu.excepciones.Classes.UserNullExeption;
 
 public class ExceptionController {
   private final DaoStock dbStock;
   private final DaoShoppingCart dbShoppingCart;
+  private final DaoUser dbUser;
 
-  public ExceptionController(DaoStock dbStock, DaoShoppingCart dbShoppingCart) {
+  public ExceptionController(DaoStock dbStock, DaoShoppingCart dbShoppingCart,
+    DaoUser dbUser) {
     this.dbStock = dbStock;
     this.dbShoppingCart = dbShoppingCart;
+    this.dbUser = dbUser;
   }
   /**
    * launch a exception if the user id is null
@@ -86,5 +91,15 @@ public class ExceptionController {
   public void enoughStock(int productId, int quantity){
     if(dbStock.findByProductId(productId).getQuantity() < quantity)
       throw new NotEnoughStockException("the quantity entered is upper to stock quantity");
+  }
+  /**
+   * compare the entered id with the id in data base
+   * @param id user id from the header
+   * @return true if the id is correct else return false
+   */
+  public void correctAuthorization(String id) {
+    User user = dbUser.findById(Integer.parseInt(id)).get();
+    if(user == null)
+      throw new UnauthorizerUserException("401: you have to start session for continue");
   }
 }

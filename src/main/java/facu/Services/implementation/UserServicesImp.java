@@ -31,7 +31,7 @@ public class UserServicesImp implements UserServices {
    */
   @Override
   public User findById(String authorization, int id) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     return dbUser.findById(id).get();
   }
   /**
@@ -41,7 +41,7 @@ public class UserServicesImp implements UserServices {
    */
   @Override
   public User findByUserName(String authorization, String userName) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     return dbUser.findByUserName(userName);
   }
   /**
@@ -50,7 +50,7 @@ public class UserServicesImp implements UserServices {
    */
   @Override
   public List<User> findAll(String authorization) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     return dbUser.findAll();
   }
   /**
@@ -59,7 +59,7 @@ public class UserServicesImp implements UserServices {
    */
   @Override
   public void removeUserById(String authorization, int id) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     dbUser.deleteById(id);
   }
   /**
@@ -69,7 +69,7 @@ public class UserServicesImp implements UserServices {
    */
   @Override
   public void updateUserById(String authorization, int userId, User user) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     controller.correctUser(user);
     User dbUser = this.dbUser.getOne(userId);
     controller.correctUser(dbUser);
@@ -84,7 +84,7 @@ public class UserServicesImp implements UserServices {
    */
   @Override
   public void addProductToShoppingCart(String authorization, int id, Product product, int quantity) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     dbUser.getOne(id).getShoppingCart().addProduct(product,quantity );
   }
 }

@@ -30,7 +30,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public List<Stock> getAll(String authorization ) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     return dbStock.findAll();
   }
   /**
@@ -39,7 +39,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public List<Stock> getAvailables(String authorization) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     return dbStock.findByAvailable(true);
   }
   /**
@@ -48,7 +48,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public List<Stock> getInavailables(String authorization) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     return dbStock.findByAvailable(false);
   }
   /**
@@ -58,7 +58,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public boolean isAvailable(String authorization, int productId) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     Stock stock = dbStock.findByProductId(productId);
     controller.correctStock(stock);
     return stock.isAvailable();
@@ -70,7 +70,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public boolean isAvailable(String authorization, Product product) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     controller.correctProduct(product);
     Stock stock = dbStock.findByProduct(product);
     controller.correctStock(stock);
@@ -83,7 +83,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public int quantityOf(String authorization, int productId) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     Stock stock = dbStock.findByProductId(productId);
     controller.correctStock(stock);
     return stock.getQuantity();
@@ -95,7 +95,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public int quantityOf(String authorization, Product product) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     controller.correctProduct(product);
     Stock stock = dbStock.findByProduct(product);
     controller.correctStock(stock);
@@ -109,7 +109,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public void addProduct(String authorization, Product product, int quantity, boolean available) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     controller.correctQuantity(quantity);
     controller.correctProduct(product);
     Stock stock = dbStock.findByProduct(product);
@@ -124,7 +124,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public void addProduct(String authorization, int productId, int quantity, boolean available) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     controller.correctQuantity(quantity);
     Stock stock = dbStock.findByProductId(productId);
     controller.correctStock(stock);
@@ -139,7 +139,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public void setAvailableProduct(String authorization, Product product, boolean available) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     controller.correctProduct(product);
     Stock stock = dbStock.findByProduct(product);
     controller.correctStock(stock);
@@ -152,7 +152,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public void setAvailableProduct(String authorization, int productId, boolean available) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     Stock stock = dbStock.findByProductId(productId);
     controller.correctStock(stock);
     stock.setAvailable(available);
@@ -164,7 +164,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public void setQuantity(String authorization, Product product, int quantity) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     controller.correctQuantity(quantity);
     controller.correctProduct(product);
     Stock stock = dbStock.findByProduct(product);
@@ -178,7 +178,7 @@ public class StockServicesImp implements StockServices {
    */
   @Override
   public void setQuantity(String authorization, int productId, int quantity) {
-    dbLogin.correctCode(authorization);
+    controller.correctAuthorization(authorization);
     Stock stock = dbStock.findByProductId(productId);
     controller.correctQuantity(quantity);
     controller.correctStock(stock);

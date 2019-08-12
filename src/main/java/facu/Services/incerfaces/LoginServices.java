@@ -1,6 +1,5 @@
 package facu.services.incerfaces;
 
-import com.sun.org.apache.xpath.internal.functions.FuncSubstring;
 import facu.dao.models.Login;
 import facu.dao.models.User;
 
@@ -17,10 +16,4 @@ public interface LoginServices {
    * @return the user id for authenticate
    */
   String logIn(Login login);
-  /**
-   * compare the entered id with the id in data base
-   * @param id user id from the header
-   * @return true if the id is correct else return false
-   */
-  boolean correctCode(String id);
 }

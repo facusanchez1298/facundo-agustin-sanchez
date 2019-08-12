@@ -3,8 +3,6 @@ package facu.services.implementation;
 import facu.dao.interfaces.DaoOrder;
 import facu.dao.interfaces.DaoUser;
 import facu.dao.models.Orders;
-import facu.dao.models.User;
-import facu.excepciones.Classes.UserNullExeption;
 import facu.excepciones.ExceptionController;
 import facu.services.incerfaces.LoginServices;
 import facu.services.incerfaces.OrderServices;
@@ -32,6 +30,7 @@ public class OrderServicesImp implements OrderServices {
    */
   @Override
   public List<Orders> getAll(String authorization) {
+    controller.correctAuthorization(authorization);
     return dbOrder.findAll();
   }
   /**
@@ -41,6 +40,7 @@ public class OrderServicesImp implements OrderServices {
    */
   @Override
   public List<Orders> getByDate(String authorization, Date date){
+    controller.correctAuthorization(authorization);
     return dbOrder.findByDate(date);
   }
   /**
@@ -50,6 +50,7 @@ public class OrderServicesImp implements OrderServices {
    */
   @Override
   public List<Orders> getByUser(String authorization, int userId) {
+    controller.correctAuthorization(authorization);
     controller.correctUser(userId);
     return dbOrder.findByShoppingCart(userId);
   }
